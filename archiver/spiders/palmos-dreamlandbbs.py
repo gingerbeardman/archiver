@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
 
-
 class DreamlandSpider(scrapy.Spider):
     name = 'dreamland'
     start_urls = (
@@ -12,10 +11,10 @@ class DreamlandSpider(scrapy.Spider):
 
     def parse(self, response):
         for row in response.css('tr'):
-            item = {}
-            item['url'] = row.css('a::attr(href)').get()
-            item['description'] = row.css('pre::text').get()
-            yield item
+            yield {
+                'url': row.css('a::attr(href)').get(),
+                'description': row.css('pre::text').get(),
+            }
 
         next_page = response.xpath("//a[contains(., 'Next')]/@href").get()
         if next_page is not None:
